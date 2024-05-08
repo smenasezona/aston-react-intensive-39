@@ -13,6 +13,7 @@ class Form extends React.Component {
 	}
 
 	submitRef = createRef()
+
 	focusRef = createRef()
 
 	componentDidMount() {
@@ -40,7 +41,7 @@ class Form extends React.Component {
 		const { name, value } = event.target
 		this.setState({ [name]: value })
 
-		this.submitRef.current.disabled = value === 'реакт';
+		this.submitRef.current.disabled = value === 'реакт'
 	}
 
 	handleSubmit = event => {
