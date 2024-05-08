@@ -1,5 +1,4 @@
-import React from 'react'
-import UserInfo from '../UserInfo/UserInfo'
+import React, { createRef } from 'react'
 import styles from './Form.module.css'
 class Form extends React.Component {
 	constructor(props) {
@@ -11,6 +10,9 @@ class Form extends React.Component {
 			tempEmail: '',
 		}
 	}
+
+	submitRef = createRef()
+	focusRef = createRef()
 
 	componentDidMount() {
 		console.log('компонент смонтирован')
@@ -36,6 +38,12 @@ class Form extends React.Component {
 	handleChange = event => {
 		const { name, value } = event.target
 		this.setState({ [name]: value })
+
+		if (value === 'реакт') {
+			this.submitRef.current.disabled = true
+		} else {
+			this.submitRef.current.disabled = false
+		}
 	}
 
 	handleSubmit = event => {
@@ -50,37 +58,49 @@ class Form extends React.Component {
 		console.log('submitted values :', { tempUsername, tempEmail })
 	}
 
+	handleFocus = () => this.focusRef.current.focus()
+
 	render() {
 		const { username, email, tempUsername, tempEmail } = this.state
 		return (
-			<>
-				<div className={styles.container}>
-					<form onSubmit={this.handleSubmit}>
-						<div className={styles.inputsContainer}>
-							<input
-								type='text'
-								placeholder='username'
-								name='tempUsername'
-								value={tempUsername}
-								onChange={this.handleChange}
-								className={styles.input}
-							/>
-							<input
-								type='email'
-								name='tempEmail'
-								placeholder='email'
-								value={tempEmail}
-								onChange={this.handleChange}
-								className={styles.input}
-							/>
-						</div>
-						<button type='submit' className={styles.button}>
+			<div className={styles.container}>
+				<form onSubmit={this.handleSubmit}>
+					<div className={styles.inputsContainer}>
+						<input
+							type='text'
+							placeholder='username'
+							name='tempUsername'
+							value={tempUsername}
+							onChange={this.handleChange}
+							className={styles.input}
+							ref={this.focusRef}
+						/>
+						<input
+							type='email'
+							name='tempEmail'
+							placeholder='email'
+							value={tempEmail}
+							onChange={this.handleChange}
+							className={styles.input}
+						/>
+					</div>
+					<div className={styles.buttonsContainer}>
+						<button
+							type='submit'
+							className={styles.button}
+							ref={this.submitRef}
+						>
 							Submit
 						</button>
-					</form>
-				</div>
-				<UserInfo username={username} email={email} />
-			</>
+						<button
+							className={styles.button}
+							onClick={() => this.focusRef.current.focus()}
+						>
+							focus!
+						</button>
+					</div>
+				</form>
+			</div>
 		)
 	}
 }
