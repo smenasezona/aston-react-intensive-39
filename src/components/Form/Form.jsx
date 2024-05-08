@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import UserInfo from '../UserInfo/UserInfo'
 import styles from './Form.module.css'
 class Form extends React.Component {
@@ -11,6 +11,9 @@ class Form extends React.Component {
 			tempEmail: '',
 		}
 	}
+
+	submitRef = createRef()
+	focusRef = createRef()
 
 	componentDidMount() {
 		console.log('компонент смонтирован')
@@ -36,6 +39,12 @@ class Form extends React.Component {
 	handleChange = event => {
 		const { name, value } = event.target
 		this.setState({ [name]: value })
+
+		if (value === 'реакт') {
+			this.submitRef.current.disabled = true
+		} else {
+			this.submitRef.current.disabled = false
+		}
 	}
 
 	handleSubmit = event => {
@@ -49,6 +58,8 @@ class Form extends React.Component {
 		})
 		console.log('submitted values :', { tempUsername, tempEmail })
 	}
+
+	handleFocus = () => this.focusRef.current.focus()
 
 	render() {
 		const { username, email, tempUsername, tempEmail } = this.state
@@ -64,6 +75,7 @@ class Form extends React.Component {
 								value={tempUsername}
 								onChange={this.handleChange}
 								className={styles.input}
+								ref={this.focusRef}
 							/>
 							<input
 								type='email'
@@ -74,9 +86,21 @@ class Form extends React.Component {
 								className={styles.input}
 							/>
 						</div>
-						<button type='submit' className={styles.button}>
-							Submit
-						</button>
+						<div className={styles.buttonsContainer}>
+							<button
+								type='submit'
+								className={styles.button}
+								ref={this.submitRef}
+							>
+								Submit
+							</button>
+							<button
+								className={styles.button}
+								onClick={() => this.focusRef.current.focus()}
+							>
+								focus!
+							</button>
+						</div>
 					</form>
 				</div>
 				<UserInfo username={username} email={email} />
