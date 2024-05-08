@@ -40,11 +40,7 @@ class Form extends React.Component {
 		const { name, value } = event.target
 		this.setState({ [name]: value })
 
-		if (value === 'реакт') {
-			this.submitRef.current.disabled = true
-		} else {
-			this.submitRef.current.disabled = false
-		}
+		this.submitRef.current.disabled = value === 'реакт';
 	}
 
 	handleSubmit = event => {
@@ -58,9 +54,6 @@ class Form extends React.Component {
 		})
 		console.log('submitted values :', { tempUsername, tempEmail })
 	}
-
-	handleFocus = () => this.focusRef.current.focus()
-
 	render() {
 		const { username, email, tempUsername, tempEmail } = this.state
 		return (
